@@ -4,10 +4,9 @@
 ?>
 
 
-
 <div class="card">
     <div class="card-header">
-        <h3 class="txt-center"><i class="fas fa-sign-alt mr-2"></i>User Login</h3>
+        <h3 class="text-center"><i class="fas fa-sign-alt mr-2"></i>User Login</h3>
     </div>
     <div class="card-body">
         <div style="width:450px; margin:0 auto;">
