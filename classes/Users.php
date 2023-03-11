@@ -473,8 +473,192 @@ class Users{
 
 
     # Delete User By ID
+    public function deleteUserById($remove){
+        $sql = "SELECT FROM tbl_users WHERE id = :id";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->bindValue(":id",$remove);
+        $result = $stmt->execute();
+
+        if($result){
+            $msg = '
+            <div class="alert alert-success alert-dismissible fade show mt-3" id="flash-msg">
+                <a href="#" class="close" data-dismiss="alert">$times;</a>
+                <strong>Success !</strong>
+                User account deleted successfully !
+            </div>
+            ';
+            return $msg;
+        }else{
+            $msg = '
+            <div class="alert alert-danger alert-dismissible fade show mt-3" id="flash-msg">
+                <a href="#" class="close" data-dismiss="alert">$times;</a>
+                <strong>Error !</strong>
+                Data is not deleted !
+            </div>
+            ';
+            return $msg;
+        }
+    }
+
+
+    # User Deactivated By Admin
+    public function userDeactiveByAdmin($deactive){
+        $sql = "UPDATE tbl_users SET
+                isActive = :isActive
+                WHERE id = :id";
+
+            $stmt = $this->db->pdo->prepare($sql);
+            $stmt->bindValue(':isActive', 1);
+            $stmt->bindValue(':id',$deactive);
+            $result = $stmt->execute();
+
+            if($result){
+                echo "<script>location.href='index.php';</script>";
+                Session::set('msg', '
+                        <div class="alert alert-success alert-dismissible fade show mt-3" id="flash-msg">
+                            <a href="#" class="close" data-dismiss="alert">$times;</a>
+                            <strong>Success !</strong>
+                            User account Deactivated Successfully !
+                        </div>
+                ');
+            }else{
+                echo "<script>location.href='index.php';</script>";
+                Session::set('msg', '
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" id="flash-msg">
+                            <a href="#" class="close" data-dismiss="alert">$times;</a>
+                            <strong>Error !</strong>
+                            Data is not Deactivated !
+                        </div>
+                ');    
+            }
+    }
+
+
+    # User Activated By Admin
+    public function userActiveByAdmin($active){
+        $sql = "UPDATE tbl_users SET
+                isActive = :isActive
+                WHERE id = :id";
+
+                $stmt = $this->db->pdo->prepare($sql);
+                $stmt->bindValue(':isActive', 0);
+                $stmt->bindValue(':id', $active);
+                $result = $stmt->execute();
+
+                if($result){
+                    echo "<script>location.href='index.php';</script>";
+                    Session::set('msg', '
+                            <div class="alert alert-success alert-dismissible fade show mt-3" id="flash-msg">
+                                <a href="#" class="close" data-dismiss="alert">$times;</a>
+                                <strong>Success !</strong>
+                                User account Activated Successfully !
+                            </div>
+                    ');
+                }else{
+                    echo "<script>location.href='index.php';</script>";
+                    Session::set('msg', '
+                            <div class="alert alert-danger alert-dismissible fade show mt-3" id="flash-msg">
+                                <a href="#" class="close" data-dismiss="alert">$times;</a>
+                                <strong>Error !</strong>
+                                Data is not activated !
+                            </div>
+                    ');
+                }
+    }
+
+
+    # Check Old Password
+    public function checkOldPassword($user_id,$old_pass){
+        $old_pass = SHA1($old_pass);
+        $sql = "SELECT password FROM tbl_users WHERE password = :password AND id = :id";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->bindValue(':password',$old_pass);
+        $stmt->bindValue(':id', $user_id);
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    # Change User Password By ID
+    public function changePasswordByUsingUserId($user_id,$data){
+        $old_pass = $data['old_password'];
+        $new_pass = $data['new_password'];
+
+
+        if($old_pass == "" || $new_pass == ""){
+            $msg = '
+            <div class="alert alert-danger alert-dismissible fade show mt-3" id="flash-msg">
+                <a href="#" class="close" data-dismiss="alert">$times;</a>
+                <strong>Error !</strong>
+                Password field must not be Empty !
+            </div>';
+            return $msg;
+        }elseif(strlen($new_pass) < 6){
+            $msg = '
+            <div class="alert alert-danger alert-dismissible fade show mt-3" id="flash-msg">
+                <a href="#" class="close" data-dismiss="alert">$times;</a>
+                <strong>Error !</strong>
+                New password must be at least 6 Characters !
+            </div>';
+            return $msg;
+        }
+
+        $oldPassword = $this->checkOldPassword($user_id,$old_pass);
+        if($oldPassword == FALSE){
+            $msg = '
+            <div class="alert alert-danger alert-dismissible fade show mt-3" id="flash-msg">
+                <a href="#" class="close" data-dismiss="alert">$times;</a>
+                <strong>Error !</strong>
+                Old password did not Matched !
+            </div>
+            ';
+            return $msg;
+        }else{
+            $newPassword = SHA1($new_pass);
+            $sql = "UPDATE tbl_users SET
+                    password = :password
+                    WHERE id = :id";
+
+                    $stmt = $this->db->pdo->prepare($sql);
+                    $stmt->bindValue(':password', $newPassword);
+                    $stmt->bindValue(':id',$user_id);
+                    $result = $stmt->execute();
+
+                    if($result){
+                        echo "<script>location.href='index.php';</script>";
+                        Session::set('msg', '
+                                <div class="alert alert-success alert-dismissible fade show mt-3" id="flash-msg">
+                                    <a href="#" class="close" data-dismiss="alert">$times;</a>
+                                    <strong>Success !</strong>
+                                    Grete news , Password changed successfully !
+                                </div>
+                        ');
+                    }else{
+                       
+                       $msg =  '
+                                 <div class="alert alert-danger alert-dismissible fade show mt-3" id="flash-msg">
+                                    <a href="#" class="close" data-dismiss="alert">$times;</a>
+                                    <strong>Error !</strong>
+                                    Password did not change !
+                                </div>';
+                        return $msg;
+                    }
+        }
+    }
 }
 
+
+
+
+
+  
+  
+  
 
 
 
