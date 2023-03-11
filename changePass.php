@@ -3,11 +3,19 @@
     Session::CheckSession();
 ?>
 
+<?php 
+if(isset($_GET['id'])){ $user_id = (int)$_GET['id']; } 
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['changePass'])){
+    $changePass = $users->changePasswordByUsingUserId($user_id,$_POST);
+}
+if(isset($changePass)){ echo $changePass; }
+?>
+
 <div class="card">
     <div class="card-header">
         <h3>Change your password
             <span class="float-right">
-                <a href="profile.php" class="btn btn-primary">Back</a>
+                <a href="profile.php?id=<?php ?>" class="btn btn-primary">Back</a>
             </span>
         </h3>
     </div>

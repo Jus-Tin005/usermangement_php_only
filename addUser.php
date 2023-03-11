@@ -1,9 +1,19 @@
 <?php
 include("inc/header.php");
 Session::CheckSession();
-?>
+$sessId = Session::get('role_id');
 
+if($sessId === '1'){    ?>
 
+    <?php
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['addUser'])){
+            $userAdd = $users->addNewUserByAdmin($_POST);
+        }
+
+        if(isset($userAdd)){
+            echo $userAdd;
+        }
+    ?>
 
 <div class="card">
     <div class="card-header">
@@ -47,3 +57,10 @@ Session::CheckSession();
         </div>
     </div>
 </div>
+
+
+<?php }else{  header('Location:index.php'); } ?>
+<?php
+    include('inc/footer.php');
+?>
+
