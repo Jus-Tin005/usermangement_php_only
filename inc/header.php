@@ -47,7 +47,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
               <?php if (Session::get('roleid') == '1') { ?>
                   <li class="nav-item">
                       <a class="nav-link" href="index.php"><i class="fas fa-users me-2"></i>User Lists</span></a>
-                  </li> 
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="manageUser.php"><i class="fas fa-user me-2"></i>Manage</span></a>
+                  </li>  
                   <li class="nav-item <?php $path = $_SERVER['SCRIPT_FILENAME']; $current = basename($path, '.php'); if ($current == 'addUser') { echo " active "; } ?>">
                     <a class="nav-link" href="addUser.php"><i class="fas fa-user-plus me-2"></i>Add User</span></a>
                   </li>

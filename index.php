@@ -1,6 +1,8 @@
 <?php
-include 'inc/header.php';
+include_once 'inc/header.php';
+include_once 'classes/Role.php';
 Session::CheckSession();
+
 
 $logMsg = Session::get('logMsg');
 if (isset($logMsg)) {
@@ -40,7 +42,6 @@ if (isset($activeId)) {
   echo $activeId;
 }
 
-
  ?>
       <div class="card ">
         <div class="card-header">
@@ -63,7 +64,7 @@ if (isset($activeId)) {
                         <th  class="text-center">Email Address</th>
                         <th  class="text-center">Mobile</th>
                         <th  class="text-center">Status</th>
-                        <th  class="text-center">Created</th>
+                        <th  class="text-center">Created_At</th>
                         <th  class="text-center" width='25%'>Action</th>
                     </tr>
                   </thead>
@@ -73,13 +74,54 @@ if (isset($activeId)) {
                         <td><?php echo $i; ?></td>
                         <td><?php echo $value->name; ?></td>
                         <td><?php echo $value->username; ?> <br>
-                            <?php if ($value->roleid  == '1'){
-                              echo "<span class='badge  bg-info text-white'>Admin</span>";
-                            } elseif ($value->roleid == '2') {
-                              echo "<span class='badge  bg-primary text-light'>Manager</span>";
-                            }elseif ($value->roleid == '3') {
-                                echo "<span class='badge  bg-dark text-white'>User Only</span>";
-                            } ?></td>
+
+
+                        <?php 
+                                  $obj = new Role();
+                                  $rows = $obj->fetchRole(); 
+
+                            ?>
+                             <?php foreach ($rows as $row): ?>
+                              
+                                  <?php if(Session::get("id") == $row->value  && Session::get("roleid") == '1'): ?>
+                                      <span class="badge  bg-info text-white">
+                                      <?= $row->role ?>
+                                  </span>
+
+                                  <?php elseif(Session::get("id") == $row->value  && Session::get("roleid") == '2'): ?>
+                                      <span class="badge  bg-success text-white">
+                                      <?= $row->role ?>
+                                  </span>
+
+                                  <?php elseif(Session::get("id") == $row->value  && Session::get("roleid") == '3'): ?>
+                                      <span class="badge  bg-primary text-white">
+                                      <?= $row->role ?>
+                                  </span>
+
+                                  <?php elseif(Session::get("id") == $row->value  && Session::get("roleid") == '4'): ?>
+                                      <span class="badge  bg-primary text-white">
+                                      <?= $row->role ?>
+                                  </span>
+
+                                  <?php elseif(Session::get("id") == $row->value  && Session::get("roleid") == '5'): ?>
+                                      <span class="badge  bg-primary text-white">
+                                      <?= $row->role ?>
+                                  </span>
+
+                                  <?php elseif(Session::get("id") == $row->value  && Session::get("roleid") == '6'): ?>
+                                      <span class="badge  bg-primary text-white">
+                                      <?= $row->role ?>
+                                  </span>
+
+                                  <?php else: ?>
+                                      <span class="badge  bg-primary text-white">
+                                      <?=  $row->role ?>
+                                  </span>
+                                  <?php endif ?>
+
+                            <?php endforeach ?> 
+                            
+                        </td> 
                         <td><?php echo $value->email; ?></td>
 
                         <td><span class="badge  bg-secondary  text-white"><?php echo $value->mobile; ?></span></td>

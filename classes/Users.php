@@ -124,7 +124,7 @@ class Users{
     $username = $data['username'];
     $email = $data['email'];
     $mobile = $data['mobile'];
-    $roleid = $data['roleid'];
+    // $roleid = $data['roleid'];
     $password = $data['password'];
 
     $checkEmail = $this->checkExistEmail($email);
@@ -180,14 +180,13 @@ class Users{
       return $msg;
     }else{
 
-      $sql = "INSERT INTO tbl_users(name, username, email, password, mobile, roleid) VALUES(:name, :username, :email, :password, :mobile, :roleid)";
+      $sql = "INSERT INTO tbl_users(name, username, email, password, mobile) VALUES(:name, :username, :email, :password, :mobile)";
       $stmt = $this->db->pdo->prepare($sql);
       $stmt->bindValue(':name', $name);
       $stmt->bindValue(':username', $username);
       $stmt->bindValue(':email', $email);
       $stmt->bindValue(':password', SHA1($password));
       $stmt->bindValue(':mobile', $mobile);
-      $stmt->bindValue(':roleid', $roleid);
       $result = $stmt->execute();
       if ($result) {
         $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
@@ -276,7 +275,6 @@ class Users{
                   </div>';
           return $msg;
         }elseif ($logResult) {
-
           Session::init();
           Session::set('login', TRUE);
           Session::set('id', $logResult->id);
