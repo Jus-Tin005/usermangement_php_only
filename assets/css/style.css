@@ -47,3 +47,20 @@ h6{
     font-size: 12px;
     line-height: 24px;
 }
+
+/*------------------
+    * Role *
+------------------*/
+
+
+.content-header{
+    background-color: rgb(215, 215, 215);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+

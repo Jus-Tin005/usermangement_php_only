@@ -1,5 +1,5 @@
 <?php
-include 'lib/Database.php';
+include_once 'lib/Database.php';
 include_once 'lib/Session.php';
 
 
@@ -187,6 +187,7 @@ class Users{
       $stmt->bindValue(':email', $email);
       $stmt->bindValue(':password', SHA1($password));
       $stmt->bindValue(':mobile', $mobile);
+      // $stmt->bindValue(':roleid', $roleid);
       $result = $stmt->execute();
       if ($result) {
         $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
@@ -275,6 +276,7 @@ class Users{
                   </div>';
           return $msg;
         }elseif ($logResult) {
+
           Session::init();
           Session::set('login', TRUE);
           Session::set('id', $logResult->id);
@@ -391,7 +393,7 @@ class Users{
       $sql = "DELETE FROM tbl_users WHERE id = :id ";
       $stmt = $this->db->pdo->prepare($sql);
       $stmt->bindValue(':id', $remove);
-        $result =$stmt->execute();
+      $result = $stmt->execute();
         if ($result) {
           $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

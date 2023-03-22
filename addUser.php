@@ -43,7 +43,6 @@ if (isset($userAdd)) {
                   <label for="password">Password</label>
                   <input type="password" name="password" class="form-control">
                 </div>
-                
                 <div class="btn-group py-2">
                     <button type="submit" name="addUser" class="btn btn-success">Register</button>
                 </div>

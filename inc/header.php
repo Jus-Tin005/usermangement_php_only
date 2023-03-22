@@ -10,6 +10,9 @@ spl_autoload_register(function($classes){
 });
 
 $users = new Users();
+$db = new Database();
+$role = new Roles();
+$perm = new Permissions();
 ?>
 
 
@@ -19,9 +22,31 @@ $users = new Users();
   <head>
     <meta charset="utf-8">
     <title>User Management Application</title>
+    <!----------------  
+      * Bootstrap CSS*
+    ------------------>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!----------------  
+      * Font Awesome*
+    ------------------>
     <link href="assets/css/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+
+     <!----------------  
+      * Data Tables  CSS *
+    ------------------>
     <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
+
+    
+    <!----------------  
+      * Select-2  CSS *
+    ------------------>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/select2-bootstrap-5-theme.min.css">
+
+     <!----------------  
+      * Custom CSS *
+    ------------------>
     <link rel="stylesheet" href="assets/css/style.css">
   </head>
   <body>
@@ -36,7 +61,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
     <div class="container p-3">
       <nav class="navbar navbar-expand-md navbar-dark bg-dark  card-header">
-        <a class="navbar-brand ps-2" href="index.php"><i class="fas fa-home me-2"></i>Home</a>
+        <a class="navbar-brand ps-2" href="index.php"><i class="fas fa-home me-2"></i>Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Mynav">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -47,10 +72,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
               <?php if (Session::get('roleid') == '1') { ?>
                   <li class="nav-item">
                       <a class="nav-link" href="index.php"><i class="fas fa-users me-2"></i>User Lists</span></a>
-                  </li>
+                  </li> 
                   <li class="nav-item">
-                      <a class="nav-link" href="manageUser.php"><i class="fas fa-user me-2"></i>Manage</span></a>
-                  </li>  
+                      <a class="nav-link" href="role.php"><i class="fas fa-tasks me-2"></i>Manage Roles</span></a>
+                  </li> 
                   <li class="nav-item <?php $path = $_SERVER['SCRIPT_FILENAME']; $current = basename($path, '.php'); if ($current == 'addUser') { echo " active "; } ?>">
                     <a class="nav-link" href="addUser.php"><i class="fas fa-user-plus me-2"></i>Add User</span></a>
                   </li>

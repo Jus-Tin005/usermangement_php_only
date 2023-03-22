@@ -55,7 +55,7 @@ if (isset($updateUser)) {
 
                 <?php if (Session::get("roleid") == '1') { ?>
                   <div class="form-group <?php if (Session::get("roleid") == '1' && Session::get("id") == $getUinfo->id) { echo "d-none"; } ?>">
-                  
+                    
                   </div>
               <?php }else{?>
                 <input type="hidden" name="roleid" value="<?php echo $getUinfo->roleid; ?>">

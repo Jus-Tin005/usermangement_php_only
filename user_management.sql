@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2023 at 02:43 PM
+-- Generation Time: Mar 22, 2023 at 05:22 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -32,18 +32,6 @@ CREATE TABLE `tbl_features` (
   `role_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `tbl_features`
---
-
-INSERT INTO `tbl_features` (`role_id`, `role_name`) VALUES
-(1, 'Admin'),
-(2, 'Manager'),
-(3, 'User Only'),
-(4, 'Finance'),
-(5, 'Accountant'),
-(6, 'Sales');
-
 -- --------------------------------------------------------
 
 --
@@ -51,39 +39,22 @@ INSERT INTO `tbl_features` (`role_id`, `role_name`) VALUES
 --
 
 CREATE TABLE `tbl_permissions` (
-  `id` int(11) NOT NULL,
-  `permission_id` int(10) UNSIGNED NOT NULL,
-  `feature_desc` varchar(50) NOT NULL
+  `per_id` int(11) NOT NULL,
+  `per_access` varchar(255) NOT NULL,
+  `per_create` varchar(255) NOT NULL,
+  `per_show` varchar(255) NOT NULL,
+  `per_edit` varchar(255) NOT NULL,
+  `per_delete` varchar(255) NOT NULL,
+  `ban_active_user` varchar(255) NOT NULL,
+  `per_onlyUser` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `tbl_permissions`
 --
 
-INSERT INTO `tbl_permissions` (`id`, `permission_id`, `feature_desc`) VALUES
-(1, 1, 'add_account_info'),
-(2, 2, 'edit_account_info'),
-(3, 3, 'view_account_info'),
-(4, 4, 'delete_account_info'),
-(5, 5, 'add_role'),
-(6, 6, 'edit_role'),
-(7, 7, 'view_role'),
-(8, 8, 'delete_role'),
-(9, 9, 'add_balance_sheet'),
-(10, 10, 'edit_balance_sheet'),
-(11, 11, 'view_balance_sheet'),
-(12, 12, 'delete_balance_sheet'),
-(30, 2, 'update_user'),
-(31, 8, 'view_accounts_info'),
-(32, 12, 'view_balance_sheet'),
-(33, 20, 'view_billing_info'),
-(34, 24, 'view_marketing_info'),
-(35, 40, 'view_permission'),
-(36, 28, 'view_reports'),
-(37, 36, 'view_role'),
-(38, 16, 'view_sales_info'),
-(39, 32, 'view_system_alert'),
-(40, 4, 'view_user');
+INSERT INTO `tbl_permissions` (`per_id`, `per_access`, `per_create`, `per_show`, `per_edit`, `per_delete`, `ban_active_user`, `per_onlyUser`) VALUES
+(1, 'Access', 'Create', 'Show', 'Edit', 'Delete', 'Ban/Active user', 'User Only');
 
 -- --------------------------------------------------------
 
@@ -92,24 +63,25 @@ INSERT INTO `tbl_permissions` (`id`, `permission_id`, `feature_desc`) VALUES
 --
 
 CREATE TABLE `tbl_roles` (
-  `roleid` int(10) UNSIGNED NOT NULL,
+  `role_id` int(10) NOT NULL,
   `role_name` varchar(255) NOT NULL,
-  `value` int(11) NOT NULL
+  `roled_name` varchar(255) NOT NULL,
+  `permission_items` varchar(255) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_roles`
 --
 
-INSERT INTO `tbl_roles` (`roleid`, `role_name`, `value`) VALUES
-(1, 'Super Admin', 1),
-(2, 'Admin', 2),
-(3, 'Manager', 3),
-(4, 'User', 4),
-(5, 'Finance', 5),
-(6, 'IT Manager', 6),
-(8, 'Cashier', 10),
-(9, 'Secretory', 11);
+INSERT INTO `tbl_roles` (`role_id`, `role_name`, `roled_name`, `permission_items`, `status`) VALUES
+(1, 'Author', 'Khun Tun', 'Access,Create,Show,Edit,Delete,Ban/Active user,User Only', 0),
+(2, 'Admin', 'Jus Tin', 'Show, Edit', 0),
+(3, 'Super Admin', 'Hnin', 'Create,Show,Edit,Delete,Ban/Active user,User Only', 0),
+(4, 'Contributor', 'Khun Tun Tun', 'Create,Show,Edit,Delete,Ban/Active user', 0),
+(6, 'Only User', 'James', 'Show,User Only', 0),
+(10, 'IT Manager', 'Nang Hni', 'Create', 0),
+(11, 'Secretory', 'Nang Thu Zar', 'Create,Show', 0);
 
 -- --------------------------------------------------------
 
@@ -122,36 +94,6 @@ CREATE TABLE `tbl_role_permissions` (
   `role_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `tbl_role_permissions`
---
-
-INSERT INTO `tbl_role_permissions` (`id`, `role_id`, `permission_id`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 1, 3),
-(4, 1, 4),
-(5, 1, 5),
-(6, 1, 6),
-(7, 1, 7),
-(8, 1, 8),
-(9, 1, 9),
-(10, 1, 10),
-(11, 1, 11),
-(12, 1, 12),
-(13, 2, 1),
-(14, 2, 2),
-(15, 2, 3),
-(16, 2, 5),
-(17, 2, 6),
-(18, 2, 7),
-(19, 2, 9),
-(20, 2, 10),
-(21, 2, 11),
-(22, 3, 2),
-(23, 3, 6),
-(24, 3, 10);
 
 -- --------------------------------------------------------
 
@@ -195,7 +137,11 @@ INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`
 (44, 'Elizabeth UK', 'Elith', 'eliza457@gmail.com', '75c6b9459572eb74d0447ba0d4611a3bea8a5851', '(+02)896748844', 4, 0, '2023-03-13 08:34:31', '2023-03-13 08:34:31'),
 (45, 'Jame Bom UK Actor', 'Bombom', 'bombom123@gmail.com', '652e55f6703c5a063e3ed08765b6698721693749', '90777777777777', 2, 0, '2023-03-13 08:36:57', '2023-03-13 08:36:57'),
 (46, 'Ko Saie', 'Sai', 'saiko234@gmail.com', '5d3233d9ae9f2155130bd86999e8c443fdbfe780', '2334555555', 11, 0, '2023-03-16 04:12:03', '2023-03-16 04:12:03'),
-(48, 'baby mgmg', 'baby', 'bay123@gmail.com', '678860ae91c4f28e10e977ab37c43d05e0a31434', '233333333333', 10, 0, '2023-03-17 03:36:09', '2023-03-17 03:36:09');
+(48, 'baby mgmg', 'baby', 'bay123@gmail.com', '678860ae91c4f28e10e977ab37c43d05e0a31434', '233333333333', 10, 0, '2023-03-17 03:36:09', '2023-03-17 03:36:09'),
+(58, 'baby nou', 'babynou', 'babynou123@gmail.com', 'a92fab8fa7b9824e925e4ca749d685da6331a17a', '09345555', NULL, 0, '2023-03-19 10:02:21', '2023-03-19 10:02:21'),
+(59, 'kakaka', 'kakaka', 'kakaka321@gmail.com', '757ad605aba186074ad1b88ca31f1d045ac2f540', '1234433333', NULL, 0, '2023-03-19 10:03:26', '2023-03-19 10:03:26'),
+(60, 'Carcarwwww', 'Carcar', 'Carcar123@gmail.com', 'e9f11b878f6301ab6770d134098f05a119b2120c', '2345688', NULL, 0, '2023-03-19 10:04:29', '2023-03-19 10:04:29'),
+(61, 'gogogoeeeee', 'gogogo', 'gogogo321@gmail.com', '964a3451a05765c6aaeb781d6da2e7143daa385d', '44444444444444', 0, 0, '2023-03-19 10:05:23', '2023-03-19 10:05:23');
 
 --
 -- Indexes for dumped tables
@@ -211,13 +157,13 @@ ALTER TABLE `tbl_features`
 -- Indexes for table `tbl_permissions`
 --
 ALTER TABLE `tbl_permissions`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`per_id`);
 
 --
 -- Indexes for table `tbl_roles`
 --
 ALTER TABLE `tbl_roles`
-  ADD PRIMARY KEY (`roleid`);
+  ADD PRIMARY KEY (`role_id`);
 
 --
 -- Indexes for table `tbl_role_permissions`
@@ -245,13 +191,13 @@ ALTER TABLE `tbl_features`
 -- AUTO_INCREMENT for table `tbl_permissions`
 --
 ALTER TABLE `tbl_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `per_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `tbl_roles`
 --
 ALTER TABLE `tbl_roles`
-  MODIFY `roleid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `role_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_role_permissions`
@@ -263,7 +209,7 @@ ALTER TABLE `tbl_role_permissions`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
