@@ -14,6 +14,7 @@ class Roles {
 
 
     # Check Exist Role
+    /*
     public function checkExistRole($role_name){
         $sql = "SELECT * FROM tbl_roles WHERE role_name = :role_name LIMIT 1";
         $stmt = $this->db->pdo->prepare($sql);
@@ -25,6 +26,7 @@ class Roles {
             return false;
         }
     }
+    */
 
 
     # Add New Role
@@ -32,7 +34,9 @@ class Roles {
         $role_name = $data['role_name'];
         $roled_name = $data['roled_name'];
 
+        /*
         $checkRole = $this->checkExistRole($role_name);
+        */
 
         if($role_name  == '' || $roled_name == ''){
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -40,13 +44,19 @@ class Roles {
                         <strong>Error ! </strong>Role Name and Display Name field must not be Empty!
                     </div>';
         return $msg;
-        }elseif($checkRole == TRUE){
+        }
+
+        /*
+        elseif($checkRole == TRUE){
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Error !</strong>  Role is already added in Database !
                     </div>';
             return $msg;
-        }else{
+        }
+        */
+        
+        else{
             $permission = array();
             $permission = $data['permission_items'];
 
