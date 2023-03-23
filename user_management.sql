@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2023 at 05:22 AM
+-- Generation Time: Mar 23, 2023 at 02:24 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -28,9 +28,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `tbl_features` (
-  `role_id` int(11) NOT NULL,
-  `role_name` varchar(255) DEFAULT NULL
+  `id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `tbl_features`
+--
+
+INSERT INTO `tbl_features` (`id`, `name`) VALUES
+(1, 'product'),
+(2, 'accountant'),
+(3, 'cashier'),
+(4, 'finance');
 
 -- --------------------------------------------------------
 
@@ -77,11 +87,12 @@ CREATE TABLE `tbl_roles` (
 INSERT INTO `tbl_roles` (`role_id`, `role_name`, `roled_name`, `permission_items`, `status`) VALUES
 (1, 'Author', 'Khun Tun', 'Access,Create,Show,Edit,Delete,Ban/Active user,User Only', 0),
 (2, 'Admin', 'Jus Tin', 'Show, Edit', 0),
-(3, 'Super Admin', 'Hnin', 'Create,Show,Edit,Delete,Ban/Active user,User Only', 0),
+(3, 'Super Admin', 'Khun Tun Lar', 'Create,Show,Edit,Delete,Ban/Active user,User Only', 0),
 (4, 'Contributor', 'Khun Tun Tun', 'Create,Show,Edit,Delete,Ban/Active user', 0),
 (6, 'Only User', 'James', 'Show,User Only', 0),
 (10, 'IT Manager', 'Nang Hni', 'Create', 0),
-(11, 'Secretory', 'Nang Thu Zar', 'Create,Show', 0);
+(12, 'Financial Manager', 'Elizabeth', 'Create,Edit,Delete,User Only', 0),
+(13, 'Admin', 'Daisy', 'Create', 0);
 
 -- --------------------------------------------------------
 
@@ -151,7 +162,7 @@ INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`
 -- Indexes for table `tbl_features`
 --
 ALTER TABLE `tbl_features`
-  ADD PRIMARY KEY (`role_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_permissions`
@@ -185,7 +196,7 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_features`
 --
 ALTER TABLE `tbl_features`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_permissions`
@@ -197,7 +208,7 @@ ALTER TABLE `tbl_permissions`
 -- AUTO_INCREMENT for table `tbl_roles`
 --
 ALTER TABLE `tbl_roles`
-  MODIFY `role_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `role_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_role_permissions`
