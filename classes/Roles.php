@@ -13,20 +13,6 @@ class Roles {
     }
 
 
-    # Check Exist Role
-    /*
-    public function checkExistRole($role_name){
-        $sql = "SELECT * FROM tbl_roles WHERE role_name = :role_name LIMIT 1";
-        $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':role_name', $role_name);
-        $stmt->execute();
-        if($stmt->rowCount() > 0){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    */
 
 
     # Add New Role
@@ -34,9 +20,6 @@ class Roles {
         $role_name = $data['role_name'];
         $roled_name = $data['roled_name'];
 
-        /*
-        $checkRole = $this->checkExistRole($role_name);
-        */
 
         if($role_name  == '' || $roled_name == ''){
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -44,39 +27,14 @@ class Roles {
                         <strong>Error ! </strong>Role Name and Display Name field must not be Empty!
                     </div>';
         return $msg;
-        }
+        }else{  
 
-        /*
-        elseif($checkRole == TRUE){
-            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Error !</strong>  Role is already added in Database !
-                    </div>';
-            return $msg;
-        }
-        */
-        
-        else{
-            $permission = array();
-            $permission = $data['permission_items'];
-
-            foreach($permission as $value){
-                if(is_array($value)){
-                    foreach($value as $val){
-                        $arr[] = $val;
-                    }
-                }else{
-                    $arr[] = $value;
-                }
-            }
-            $run = implode(",", $arr);
-
-            $sql = "INSERT INTO tbl_roles(role_name,roled_name,permission_items)VALUES(:role_name,:roled_name, :permission_items)";
+            $sql = "INSERT INTO tbl_roles(role_name,roled_name)VALUES(:role_name,:roled_name)";       
             $stmt = $this->db->pdo->prepare($sql);
             $stmt->bindValue(':role_name',$role_name);
             $stmt->bindValue(':roled_name',$roled_name);
-            $stmt->bindValue(':permission_items', $run);
             $result = $stmt->execute();
+            
             if($result){
                 $msg = '<div class="alert alert-success alert-dismissible" id="flash-msg">
 			                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -93,6 +51,8 @@ class Roles {
         }
     }
 
+    
+
 
     # Select Role
     public function selectRole(){
@@ -100,15 +60,15 @@ class Roles {
         $stmt = $this->db->pdo->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-        return $result;
+        return $result;   
     }
 
     # Edit Role By ID
-    public function editRole(){
-        $sql = "SELECT * FROM tbl_roles WHERE role_id LIMIT 1";
+    public function editRole($role_id){
+        $sql = "SELECT * FROM tbl_roles WHERE role_id = $role_id";
         $stmt = $this->db->pdo->prepare($sql);
         $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result; 
     }
 
@@ -168,13 +128,6 @@ class Roles {
           return $msg;
         }
     }
-
-    # Select Permission Item
-    public function selectPermissionItem($data){
-        $sql = "SELECT * FROM tbl_roles WHERE role_name = $data";
-        $stmt = $this->db->pdo->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-        return $result;
-    }
+   
 }
+

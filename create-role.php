@@ -6,6 +6,7 @@
 <?php
    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_role'])){
       $addRole = $role->addNewRole($_POST);
+      $addPer = $perm->addPermission($_POST);
    }
 ?>
 
@@ -55,21 +56,12 @@
                                  <select name="permission_items[]" id="multiple-select-field"  class="form-control multiple-select-field"  multiple="multiple">
                                     <optgroup>
                                        <?php 
-                                          $permissionList = $perm->selectAllPermission(); 
-                                          var_dump($permissionList);
-                                        
-                                 
-                                          if($permissionList){  foreach($permissionList as $allow){  
-                                       ?>
-                                          
-                                             <option value="<?= $allow->per_access; ?>"><?= $allow->per_access; ?></option>
-                                             <option value="<?= $allow->per_create; ?>"><?= $allow->per_create; ?></option>
-                                             <option value="<?= $allow->per_show; ?>"><?= $allow->per_show; ?></option>
-                                             <option value="<?= $allow->per_edit; ?>"><?= $allow->per_edit; ?></option>
-                                             <option value="<?= $allow->per_delete; ?>"><?= $allow->per_delete; ?></option>
-                                             <option value="<?= $allow->ban_active_user; ?>"><?= $allow->ban_active_user; ?></option>
-                                             <option value="<?= $allow->per_onlyUser; ?>"><?= $allow->per_onlyUser; ?></option>
-                                         <?php } } ?>
+                                          $permissionList = $perm->selectAllPermission();  
+                                          if($permissionList){  foreach($permissionList as $key => $val){      
+                                       ?>       
+                                             <option value="<?= $val['permission_items']; ?>"><?= $val['permission_items']; ?></option>
+                                            
+                                       <?php } } ?>
                                     </optgroup>
                                  </select>
                               </div>

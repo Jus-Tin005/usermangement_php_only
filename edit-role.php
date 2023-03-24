@@ -7,7 +7,7 @@
    echo "<script>location.href='role.php';</script>";
    exit();
  }else{
-   $getRole = $role->editRole();
+   $getRole = $role->editRole($role_id);
  }
 ?>
 
@@ -15,6 +15,7 @@
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])){
    $updateRole = $role->updateRole($_POST,$role_id);
 }
+
 ?>
 
 
@@ -42,13 +43,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])){
                               <div class="form-group row">
                                  <div class="col-md-2">Role Name</div>
                                  <div class="col-md-8 py-1">
-                                    <input type="text"  id="role_name"  class="form-control"  value="<?= $val->role_name; ?>" readonly="readonly" autofocus=""> 
+                                    <input type="text"  id="role_name"  class="form-control"  value="<?= $val['role_name']; ?>" readonly="readonly" autofocus=""> 
                                  </div>
                               </div> 
                               <div class="form-group row">
                                  <div class="col-md-2 py-1">Display Name</div>
                                  <div class="col-md-8">
-                                    <input type="text" name="roled_name" id="roled_name"  class="form-control"  value="<?= $val->roled_name ?>" autofocus="">
+                                    <input type="text" name="roled_name" id="roled_name"  class="form-control"  value="<?= $val['roled_name'] ?>" autofocus="">
                                  </div>
                               </div>
                               <div class="form-group row">
@@ -57,24 +58,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])){
                                     <div class="form-group">    
                                           <select name="permission_items[]"  id="multiple-select-field"  class="form-control multiple-select-field"  multiple="multiple" required="readonly">
                                              <optgroup>
-                                             <?php
-                                                   $permissionList = $perm->selectAllPermission(); 
-                                                   $convert =  json_decode(json_encode($permissionList), true);;
-                                                  
-                                    
-                                                   if($convert){ foreach($convert as $allow){ 
-                                                      $list = explode(',', $val->permission_items);
-                                                      foreach($list as $item){
-                                                         $item;
-                                                         echo '<option value=" ' . $item .' " '; 
-                                                         if(in_array($item,$allow)){
-                                                            echo 'selected';
-                                                            echo '>' . $item . '</option> ';
-                                                         } 
-                                                      } 
-                                                   }
-                                                  }
-                                              ?>
+                                             <?php 
+                                                   $permissionList = $perm->selectAllPermission();  
+                                                   if($permissionList){  foreach($permissionList as $key => $val){      
+                                             ?>       
+                                             <option value="<?= $val['permission_items']; ?>"><?= $val['permission_items']; ?></option>
+                                            
+                                             <?php } } ?>
                                              </optgroup>
                                           </select>
                                     </div>
