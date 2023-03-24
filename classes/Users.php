@@ -209,7 +209,8 @@ class Users{
 
   # Select All User 
   public function selectAllUserData(){
-    $sql = "SELECT * FROM tbl_users ORDER BY id DESC";
+    // $sql = "SELECT * FROM tbl_users ORDER BY id DESC";
+    $sql = "SELECT tbl_users.*,tbl_roles.* FROM tbl_users  LEFT JOIN tbl_roles ON tbl_users.roleid = tbl_roles.role_id";
     $stmt = $this->db->pdo->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_OBJ);
